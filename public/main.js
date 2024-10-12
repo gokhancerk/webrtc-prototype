@@ -18,3 +18,23 @@ const streamConstraints = {
     audio: true,
     video: true
 }
+
+btnEnter.addEventListener('click', () => {
+    if (inputRoom.value === '') {
+        alert('Please enter a room number');
+    } else {
+        navigator.mediaDevices.getUserMedia(streamConstraints)
+            .then(stream => {
+                localStream = stream;
+                localVideo.srcObject = stream;
+                // localVideo.muted = true;
+                // remoteVideo.muted = true;
+                // remoteVideo.autoplay = true;
+            })
+            .catch(error => {
+                console.error('Error accessing media devices.', error);
+            });
+        selectRoom.style.display = 'none';
+        cRoom.style.display = 'block';
+    }
+});
