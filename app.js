@@ -12,20 +12,22 @@ http.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 
+var roomno = 0;
+
 io.on("connection", (socket) => {
   console.log("User connected");
 
   socket.on("create or join", (room) => {
     console.log("create or join to room", room);
-    let myRoom = io.sockets.adapter.rooms[room] || { length: 0 };
+    let myRoom = io.sockets.adapter.rooms[room] || { length: ++roomno };
     let numClients = myRoom.length;
-
+    
     console.log(room, "has", numClients, "clients");
-
-    if (numClients === 0) {
+    
+    if (numClients === 1) {
       socket.join(room);
       socket.emit("created", room);
-    } else if (numClients === 1) {
+    } else if (numClients === 2) {
       socket.join(room);
       socket.emit("joined", room);
     } else {
